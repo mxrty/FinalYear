@@ -14,8 +14,8 @@ public class RouteCalculator {
         Route route = new Route();
         Hashtable<String, Node> graphNodes = graph.getNodes();
         for (String city : routeArr) {
-            if (graph.getNodes().containsKey(city)) {
-                route.addStop(graph.getNodes().get(city));
+            if (graphNodes.containsKey(city)) {
+                route.addStop(graphNodes.get(city));
             }
         }
         return route;
@@ -25,6 +25,9 @@ public class RouteCalculator {
 
         ArrayList<Node> routeList = route.getRouteList();
         double sum = 0;
+        if (routeList.size() == 0) {
+            return sum;
+        }
         Node first = (Node) routeList.get(0);
 
         for (int i = 0; i < routeList.size() - 1; i++) {
@@ -54,6 +57,7 @@ public class RouteCalculator {
         return route;
     }
 
+    // 3. 2-opt neighbourhood
     public ArrayList<Route> generate2optNeighbourhood(Route route) {
         ArrayList<Route> neighbourhood = new ArrayList<Route>();
         ArrayList<Node> routeList = route.getRouteList();
@@ -70,7 +74,8 @@ public class RouteCalculator {
         return neighbourhood;
     }
 
-    public Route FindBestNeighbour(ArrayList<Route> neighbourhood) {
+    // 4. Best neighbour step function
+    public Route findBestNeighbour(ArrayList<Route> neighbourhood) {
         Route bestNeighbour = neighbourhood.get(0);
         double bestNeighbourCost = getCostOfRoute(bestNeighbour);
 

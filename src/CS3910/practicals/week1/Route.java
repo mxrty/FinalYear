@@ -30,6 +30,9 @@ public class Route {
 
         for (Node node : routeList) {
             sb.append(node.getName());
+            if(!routeList.get(routeList.size() - 1).equals(node)){
+                sb.append(":");
+            }
         }
 
         return sb.toString();

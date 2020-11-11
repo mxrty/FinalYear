@@ -1,5 +1,7 @@
 package CS3910.practicals.week3;
 
+import CS3910.practicals.week1.Node;
+
 import java.util.*;
 
 /**
@@ -11,6 +13,8 @@ public class AntennaArray {
      */
     public static final double MIN_SPACING = 0.25;
 
+    private Random random;
+
     /**
      * Construct an antenna design problem.
      *
@@ -20,6 +24,7 @@ public class AntennaArray {
     public AntennaArray(int n_ant, double steering_ang) {
         n_antennae = n_ant;
         steering_angle = steering_ang;
+        random = new Random();
     }
 
     /**
@@ -129,4 +134,18 @@ public class AntennaArray {
         }
         return 20.0 * Math.log(Math.abs(sum));
     }
+
+    public int getAntennaeCount() {
+        return n_antennae;
+    }
+
+    public double[] getUniformRandomVector() {
+        double[] uniformRandomVector = new double[n_antennae];
+        double uniformValue = random.nextDouble();
+        for (int i = 0; i < n_antennae; i++) {
+            uniformRandomVector[i] = uniformValue;
+        }
+        return uniformRandomVector;
+    }
+
 }
