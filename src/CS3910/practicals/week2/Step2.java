@@ -11,6 +11,7 @@ public class Step2 {
 
     // In seconds
     public final static int timeLimit = 3;
+
     private static RouteCalculator routeCalculator;
 
     public static void main(String[] args) {
@@ -59,7 +60,7 @@ public class Step2 {
         System.out.println("Cost: " + bestSolutionCost);
     }
 
-    public Graph initialiseGraph() {
+    public static Graph initialiseGraph() {
         Graph graph = new Graph();
 
         Node nodeA = new Node("A");

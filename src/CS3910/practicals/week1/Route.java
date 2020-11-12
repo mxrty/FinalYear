@@ -24,13 +24,17 @@ public class Route {
         return routeList;
     }
 
+    public int size() {
+        return routeList.size();
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
 
         for (Node node : routeList) {
             sb.append(node.getName());
-            if(!routeList.get(routeList.size() - 1).equals(node)){
+            if (!routeList.get(routeList.size() - 1).equals(node)) {
                 sb.append(":");
             }
         }
