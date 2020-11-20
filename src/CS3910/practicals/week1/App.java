@@ -12,20 +12,20 @@ public class App {
 
         // Laptop: C:\Users\M\Projects\FinalYear\src\CS3910\practicals
         // Desktop: C:\Users\MS\IdeaProjects\FinalYear\src\CS3910\practicals
-        graph = parser.generateGraphFromCsv("C:\\Users\\M\\Projects\\FinalYear\\src\\CS3910\\practicals\\ulysses16.csv");
+        graph = parser.generateGraphFromCsv("C:\\Users\\MS\\IdeaProjects\\FinalYear\\src\\CS3910\\practicals\\cities57_10.csv");
 
         // Lab sign off part 1
         RouteCalculator routeCalculator = new RouteCalculator();
-        Route specifiedRoute = routeCalculator.createRoute(graph, "1,2,4,3,6,5,7,8,10,9");
-        System.out.println("Route: " + specifiedRoute.toString() + "\n" + "Cost: " + routeCalculator.getCostOfRoute(specifiedRoute));
+        Route specifiedRoute = routeCalculator.createRoute(graph, "1,2,3,4,5,6,7,8,9,10");
+        //System.out.println("Route: " + specifiedRoute.toString() + "\n" + "Cost: " + routeCalculator.getCostOfRoute(specifiedRoute));
 
         // Lab sign off part 2
-        app.randomSearch(graph, 3);
+        app.randomSearch(graph, 10);
     }
 
     public void randomSearch(Graph graph, int timeLimit) {
         Route bestSolution = new Route();
-        double bestSolutionCost = 0;
+        double bestSolutionCost = Double.MAX_VALUE;
         RouteCalculator generator = new RouteCalculator();
 
         for (long stop = System.nanoTime() + TimeUnit.SECONDS.toNanos(timeLimit); stop > System.nanoTime(); ) {
@@ -34,7 +34,7 @@ public class App {
             System.out.println("Route: " + currentSolution.toString());
             System.out.println("Cost: " + currentSolutionCost);
             System.out.println("------");
-            if (currentSolutionCost < bestSolutionCost || bestSolutionCost <= 0) {
+            if (currentSolutionCost < bestSolutionCost) {
                 bestSolution = currentSolution;
                 bestSolutionCost = currentSolutionCost;
             }

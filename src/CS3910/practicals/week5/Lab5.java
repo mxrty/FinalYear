@@ -30,13 +30,13 @@ public class Lab5 {
     Termination               : 100 generations
      */
     public static void main(String[] args) {
+        // Lab sign off part 4
         Lab5 lab = new Lab5(100, 100);
     }
 
     public Lab5(int populationSize, int generations) {
         CsvParser parser = new CsvParser();
-        graph = parser.generateGraphFromCsv("C:\\Users\\MS\\IdeaProjects\\FinalYear\\src\\CS3910\\practicals\\ulysses16.csv");
-        //graph = Step2.initialiseGraph();
+        graph = parser.generateGraphFromCsv("C:\\Users\\MS\\IdeaProjects\\FinalYear\\src\\CS3910\\practicals\\cities57_10.csv");
         routeCalculator = new RouteCalculator();
         random = new Random();
 
@@ -44,21 +44,18 @@ public class Lab5 {
         globalBestRoute = new Route();
         globalBestRouteCost = Double.MAX_VALUE;
 
+        // INITIALISE population with random candidate solutions
         population = initialisePopulation(populationSize);
-        //TODO: Check fitness function (same output every generation)
+        // EVALUATE each candidate
         evaluatePopulation(population);
+        // REPEAT until termination condition satisfied
         for (int i = 0; i < generations; i++) {
-            ArrayList<Route> selectedParents = parentSelection(population);
-            ArrayList<Route> offspring = recombinePairsOfParents(selectedParents);
-            // TODO: Maintain population size
-            ArrayList<Route> offspring2 = recombinePairsOfParents(selectedParents);
-            offspring.addAll(offspring2);
-            ArrayList<Route> mutatedOffspring = offspringMutation(offspring);
+            ArrayList<Route> mutatedOffspring = selectParentsAndProduceOffspring(population);
             evaluatePopulation(mutatedOffspring);
-            population = survivorSelection(mutatedOffspring);
+            survivorSelection(population, mutatedOffspring);
         }
 
-        System.out.println("End off algorithm after " + generations + " generations");
+        System.out.println("********* End off algorithm after " + generations + " generations *********");
         System.out.println("Best route for this run: " + globalBestRoute.toString() + " with a cost of " + globalBestRouteCost);
     }
 
@@ -70,25 +67,36 @@ public class Lab5 {
         return population;
     }
 
-    // Tournament selection
-    public ArrayList<Route> parentSelection(ArrayList<Route> population) {
-        ArrayList<Route> newPopulation = new ArrayList<Route>();
-        int popSize = population.size();
-        for (int i = 0; i < popSize; i += 2) {
-            // Only select if i has neighbour to avoid ArrayOutOfBoundsException
-            if (i + 1 < popSize) {
-                Route parentA = population.get(i);
-                Route parentB = population.get(i + 1);
-                newPopulation.add(routeCalculator.getCostOfRoute(parentA) < routeCalculator.getCostOfRoute(parentB) ? parentA : parentB);
-            } else {
-                newPopulation.add(population.get(i));
-            }
+    /*
+    1. Tournament selection of parents
+    2. Recombine selected parents to produce offspring
+    3. Mutate offspring
+    4. Add offspring to population
+     */
+    public ArrayList<Route> selectParentsAndProduceOffspring(ArrayList<Route> population) {
+        ArrayList<Route> offspring = new ArrayList<Route>();
+        for (int i = 0; i < population.size() / 2; i++) {
+            Route parentA = population.get(random.nextInt(population.size()));
+            Route parentB = population.get(random.nextInt(population.size()));
+
+            Route[] children = order1Crossover(parentA, parentB);
+            offspring.add(children[0]);
+            offspring.add(children[1]);
         }
-        return newPopulation;
+
+        return offspringMutation(offspring);
     }
 
-    public ArrayList<Route> survivorSelection(ArrayList<Route> population) {
-        return population;
+    /*
+     1. Pick top 10% parents
+     2. Pick top children until populationSize is met
+     */
+    public void survivorSelection(ArrayList<Route> parents, ArrayList<Route> offspring) {
+        int eliteQuota = parents.size() / 10;
+        ArrayList<Route> eliteParents = pickTopNRoutesFromList(parents, eliteQuota);
+        ArrayList<Route> newGeneration = pickTopNRoutesFromList(offspring, parents.size() - eliteQuota);
+        population = eliteParents;
+        population.addAll(newGeneration);
     }
 
     public ArrayList<Route> offspringMutation(ArrayList<Route> population) {
@@ -113,31 +121,17 @@ public class Lab5 {
             double currentCost = routeCalculator.getCostOfRoute(current);
             if (currentCost < bestCost) {
                 bestRoute = current;
+                bestCost = currentCost;
             }
         }
-        System.out.println("Best route for this generation: " + bestRoute.toString() + " with a fitness of " + bestCost);
+        System.out.print("Best route for this generation: " + bestRoute.toString() + " with a fitness of " + bestCost);
         if (bestCost < globalBestRouteCost) {
             globalBestRoute = bestRoute;
             globalBestRouteCost = bestCost;
-            System.out.println("A new lowest cost route has been discovered!" + "\n" + "Route " + globalBestRoute.toString() + " with a cost of " + globalBestRouteCost);
+            System.out.println(". This is the new lowest cost route!!!");
+        } else {
+            System.out.print("\n");
         }
-    }
-
-    // TODO: Run in uniform random distribution
-    public ArrayList<Route> recombinePairsOfParents(ArrayList<Route> parents) {
-        ArrayList<Route> offspring = new ArrayList<Route>();
-
-        int popSize = parents.size();
-        for (int i = 0; i < popSize; i += 2) {
-            // Only select if i has neighbour to avoid ArrayOutOfBoundsException
-            if (i + 1 < popSize) {
-                Route[] recombinedParents = order1Crossover(parents.get(i), parents.get(i + 1));
-                offspring.add(recombinedParents[0]);
-                offspring.add(recombinedParents[1]);
-            }
-        }
-
-        return offspring;
     }
 
     public Route[] order1Crossover(Route parentA, Route parentB) {
@@ -178,5 +172,30 @@ public class Lab5 {
         recombinedParents[1] = new Route(childBRoute);
 
         return recombinedParents;
+    }
+
+    public ArrayList<Route> pickTopNRoutesFromList(ArrayList<Route> list, int topN) {
+        ArrayList<Route> topRoutes = new ArrayList<Route>();
+
+        // Sort in ascending order
+        Collections.sort(list, (route1, route2) -> {
+            double route1Cost = routeCalculator.getCostOfRoute(route1);
+            double route2Cost = routeCalculator.getCostOfRoute(route2);
+            if (route1Cost < route2Cost) {
+                return -1;
+            } else if (route1Cost > route2Cost) {
+                return 1;
+            } else {
+                return 0;
+            }
+        });
+
+        for (int i = 0; i < topN; i++) {
+            double cost = routeCalculator.getCostOfRoute(list.get(i));
+
+            topRoutes.add(list.get(i));
+        }
+
+        return topRoutes;
     }
 }

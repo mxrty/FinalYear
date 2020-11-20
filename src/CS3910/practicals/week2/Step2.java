@@ -1,22 +1,25 @@
 package CS3910.practicals.week2;
 
-import CS3910.practicals.week1.Graph;
-import CS3910.practicals.week1.Node;
-import CS3910.practicals.week1.Route;
-import CS3910.practicals.week1.RouteCalculator;
+import CS3910.practicals.week1.*;
 
 import java.util.concurrent.TimeUnit;
 
 public class Step2 {
 
     // In seconds
-    public final static int timeLimit = 3;
+    public final static int timeLimit = 5;
 
     private static RouteCalculator routeCalculator;
 
     public static void main(String[] args) {
         Step2 step2 = new Step2();
-        Graph graph = step2.initialiseGraph();
+
+        CsvParser parser = new CsvParser();
+
+        // Laptop: C:\Users\M\Projects\FinalYear\src\CS3910\practicals
+        // Desktop: C:\Users\MS\IdeaProjects\FinalYear\src\CS3910\practicals
+        Graph graph = parser.generateGraphFromCsv("C:\\Users\\MS\\IdeaProjects\\FinalYear\\src\\CS3910\\practicals\\cities57_10.csv");
+        //Graph graph = step2.initialiseGraph();
         routeCalculator = new RouteCalculator();
         // 1. Random initialisation
         Route route = routeCalculator.generateRandomRoute(graph);
@@ -50,7 +53,7 @@ public class Step2 {
 
             System.out.println("Route: " + currentSolution.toString() + "\n" + "Cost: " + currentSolutionCost + "\n" + "------");
 
-            if (currentSolutionCost < bestSolutionCost || bestSolutionCost <= 0) {
+            if (currentSolutionCost < bestSolutionCost) {
                 bestSolution = currentSolution;
                 bestSolutionCost = routeCalculator.getCostOfRoute(bestSolution);
             }

@@ -13,8 +13,8 @@ public class Main {
 
         // Lab sign off part 5
         int numberOfAntennae = 3;
-        int angle = 90;
-        int timeLimit = 3;
+        int angle = 100;
+        int timeLimit = 5;
 
         AntennaArray antennaArray = new AntennaArray(numberOfAntennae, angle);
         ParticleSwarmOptimisation pso = new ParticleSwarmOptimisation(antennaArray, 20);

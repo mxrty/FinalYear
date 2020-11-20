@@ -22,7 +22,6 @@ public class RouteCalculator {
     }
 
     public double getCostOfRoute(Route route) {
-
         ArrayList<Node> routeList = route.getRouteList();
         double sum = 0;
         if (routeList.size() == 0) {
