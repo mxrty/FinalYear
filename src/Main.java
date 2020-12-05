@@ -8,6 +8,13 @@ public class Main {
 
     }
 
+    public String fuction(int count, int coin) {
+        if (coin % 100 > 0) {
+            return count + " x £" + (coin % 100);
+        }
+        return count + " x " + coin + "p";
+    }
+
     int countPairs(int numCount, List<Integer> ratingValues, int target) {
         int distinctPairs = 0;
 

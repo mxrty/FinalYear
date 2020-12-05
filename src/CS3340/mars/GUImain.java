@@ -35,7 +35,7 @@ public class GUImain {
     JButton resetButton;
     JButton quitButton;
 
-    private String defSimLength = "1000";
+    private String defSimLength = "100000";
     private String defSimSeed = "123";
     private String defSimDim = "100";    // default value for the dimension of the simulation grid
     private String defSimProb = "0.002";  // default value for wherever a probability is needed
@@ -285,7 +285,7 @@ public class GUImain {
         try {
 
             // Run the simulation
-            for (int i = 0; i < ModelConstants.LENGTH; i++) {
+            for (int i = 0; i < ModelConstants.LENGTH && s.getRocks().size() > 0; i++) {
                 s.simulateOneStep();
             }
             runLongButton.setText("Continue running");

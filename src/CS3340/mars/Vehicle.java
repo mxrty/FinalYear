@@ -107,7 +107,6 @@ class Vehicle extends Entity {
     private void travelUpGradient(Field field, Mothership mothership) {
         ArrayList<Location> possibleMoves = field.getAllfreeAdjacentLocations(this.getLocation());
         if (!possibleMoves.isEmpty()) {
-            int numMoves = possibleMoves.size();
             Location previousLocation = this.getLocation();
             // To avoid getting stuck
             Collections.shuffle(possibleMoves);
@@ -115,7 +114,7 @@ class Vehicle extends Entity {
 
             // Find strongest signal
             mothership.emitSignal(field);
-            for (int i = 1; i < numMoves; i++) {
+            for (int i = 1; i < possibleMoves.size(); i++) {
                 Location current = possibleMoves.get(i);
                 if (field.getSignalStrength(current) > field.getSignalStrength(newLocation)) {
                     newLocation = current;
@@ -132,7 +131,6 @@ class Vehicle extends Entity {
     private void travelDownGradient(Field field, Mothership mothership) {
         ArrayList<Location> possibleMoves = field.getAllfreeAdjacentLocations(this.getLocation());
         if (!possibleMoves.isEmpty()) {
-            int numMoves = possibleMoves.size();
             Location previousLocation = this.getLocation();
             // To avoid getting stuck
             Collections.shuffle(possibleMoves);
@@ -140,7 +138,7 @@ class Vehicle extends Entity {
 
             // Find strongest signal
             mothership.emitSignal(field);
-            for (int i = 1; i < numMoves; i++) {
+            for (int i = 1; i < possibleMoves.size(); i++) {
                 Location current = possibleMoves.get(i);
                 if (field.getSignalStrength(current) < field.getSignalStrength(newLocation)) {
                     newLocation = current;

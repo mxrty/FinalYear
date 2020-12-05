@@ -197,4 +197,12 @@ public class Simulator {
         s.simulate(11000);
 
     }
+
+    /*
+    Added by me
+     */
+
+    public ArrayList<Rock> getRocks() {
+        return rocks;
+    }
 }
