@@ -1,6 +1,7 @@
 package CS3910.coursework;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class Recipe {
 
@@ -14,13 +15,40 @@ public class Recipe {
         producedLengths = new ArrayList<Integer>();
     }
 
-    private boolean add(int length) {
+    public boolean add(int length) {
         if (length <= remainingLength) {
             remainingLength -= length;
             producedLengths.add(length);
             return true;
         }
         return false;
+    }
+
+    public boolean equivalent(Recipe recipe) {
+        if (producedLengths.size() != recipe.getProducedLengths().size()) {
+            return false;
+        }
+        // To not change the order of original recipes
+        ArrayList<Integer> copyThis = new ArrayList<>(producedLengths);
+        ArrayList<Integer> copyRecipe = new ArrayList<>(recipe.getProducedLengths());
+
+        Collections.sort(copyThis);
+        Collections.sort(copyRecipe);
+
+        return copyThis.equals(copyRecipe);
+    }
+
+
+    public boolean isEmpty(){
+        return producedLengths.isEmpty();
+    }
+
+    public ArrayList<Integer> getProducedLengths() {
+        return producedLengths;
+    }
+
+    public int getTotalProducedLength(){
+        return stock.getLength() - remainingLength;
     }
 
     public double getCost() {

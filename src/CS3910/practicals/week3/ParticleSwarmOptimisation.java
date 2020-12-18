@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
 public class ParticleSwarmOptimisation {
-    private AntennaArray antennaArray;
-    private int swarmSize;
+    private final AntennaArray antennaArray;
+    private final int swarmSize;
 
     private double[] globalBestPosition;
     private double globalBestSSL;
@@ -43,7 +43,7 @@ public class ParticleSwarmOptimisation {
         for (int i = 0; i < swarmSize; i++) {
             double[] initialPosition = Main.generateValidDesign(antennaArray);
             // A second feasible position is generated at random. Initial velocity is set to half the difference between this second position and initial position
-            double[] initialVelocity = vectorCalculator.divide(vectorCalculator.subtract(initialPosition,Main.generateValidDesign(antennaArray)),2);
+            double[] initialVelocity = VectorCalculator.divide(VectorCalculator.subtract(initialPosition, Main.generateValidDesign(antennaArray)), 2);
             swarm.add(new Particle(initialVelocity, Main.generateValidDesign(antennaArray), globalBestSSL));
         }
         return swarm;

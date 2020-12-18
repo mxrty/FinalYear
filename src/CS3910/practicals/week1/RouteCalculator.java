@@ -1,7 +1,8 @@
 package CS3910.practicals.week1;
 
-import java.lang.reflect.Array;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Hashtable;
 
 public class RouteCalculator {
 
@@ -27,7 +28,7 @@ public class RouteCalculator {
         if (routeList.size() == 0) {
             return sum;
         }
-        Node first = (Node) routeList.get(0);
+        Node first = routeList.get(0);
 
         for (int i = 0; i < routeList.size() - 1; i++) {
             sum += (double) routeList.get(i).getNeighbours().get(routeList.get(i + 1));

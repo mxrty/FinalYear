@@ -1,11 +1,10 @@
 package CS3910.practicals.week1;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Node {
-    private String name;
-    private HashMap<Node, Double> neighbours;
+    private final String name;
+    private final HashMap<Node, Double> neighbours;
     private double x;
     private double y;
 

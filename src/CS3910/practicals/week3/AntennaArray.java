@@ -1,7 +1,5 @@
 package CS3910.practicals.week3;
 
-import CS3910.practicals.week1.Node;
-
 import java.util.*;
 
 /**
@@ -13,7 +11,9 @@ public class AntennaArray {
      */
     public static final double MIN_SPACING = 0.25;
 
-    private Random random;
+    private final Random random;
+    private final int n_antennae;
+    private final double steering_angle;
 
     /**
      * Construct an antenna design problem.
@@ -88,8 +88,8 @@ public class AntennaArray {
         if (!is_valid(design)) return Double.MAX_VALUE;
 
         class PowerPeak {
-            public double elevation;
-            public double power;
+            public final double elevation;
+            public final double power;
 
             public PowerPeak(double e, double p) {
                 elevation = e;
@@ -121,9 +121,6 @@ public class AntennaArray {
                 return peaks.get(0).power;
         return peaks.get(1).power;
     }
-
-    private int n_antennae;
-    private double steering_angle;
 
     private double array_factor(double[] design, double elevation) {
         double steering = 2.0 * Math.PI * steering_angle / 360.0;

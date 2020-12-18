@@ -33,36 +33,6 @@ public class Step2 {
         step2.localSearch(route, graph, timeLimit);
     }
 
-    public void localSearch(Route initial, Graph graph, int timeLimit) {
-        Route currentSolution = initial;
-        Route bestSolution = currentSolution;
-        double currentSolutionCost = routeCalculator.getCostOfRoute(currentSolution);
-        double bestSolutionCost = currentSolutionCost;
-
-
-        // 2. CPU-time-based termination
-        for (long stop = System.nanoTime() + TimeUnit.SECONDS.toNanos(timeLimit); stop > System.nanoTime(); ) {
-            Route bestNeighbour = routeCalculator.findBestNeighbour(routeCalculator.generate2optNeighbourhood(currentSolution));
-            if (routeCalculator.getCostOfRoute(bestNeighbour) < currentSolutionCost) {
-                currentSolution = bestNeighbour;
-            } else {
-                // If local minima found generate new random route
-                currentSolution = routeCalculator.generateRandomRoute(graph);
-            }
-            currentSolutionCost = routeCalculator.getCostOfRoute(currentSolution);
-
-            System.out.println("Route: " + currentSolution.toString() + "\n" + "Cost: " + currentSolutionCost + "\n" + "------");
-
-            if (currentSolutionCost < bestSolutionCost) {
-                bestSolution = currentSolution;
-                bestSolutionCost = routeCalculator.getCostOfRoute(bestSolution);
-            }
-        }
-
-        System.out.println("*BEST*\n" + "Route: " + bestSolution.toString());
-        System.out.println("Cost: " + bestSolutionCost);
-    }
-
     public static Graph initialiseGraph() {
         Graph graph = new Graph();
 
@@ -117,5 +87,35 @@ public class Step2 {
         graph.addNode(nodeF);
 
         return graph;
+    }
+
+    public void localSearch(Route initial, Graph graph, int timeLimit) {
+        Route currentSolution = initial;
+        Route bestSolution = currentSolution;
+        double currentSolutionCost = routeCalculator.getCostOfRoute(currentSolution);
+        double bestSolutionCost = currentSolutionCost;
+
+
+        // 2. CPU-time-based termination
+        for (long stop = System.nanoTime() + TimeUnit.SECONDS.toNanos(timeLimit); stop > System.nanoTime(); ) {
+            Route bestNeighbour = routeCalculator.findBestNeighbour(routeCalculator.generate2optNeighbourhood(currentSolution));
+            if (routeCalculator.getCostOfRoute(bestNeighbour) < currentSolutionCost) {
+                currentSolution = bestNeighbour;
+            } else {
+                // If local minima found generate new random route
+                currentSolution = routeCalculator.generateRandomRoute(graph);
+            }
+            currentSolutionCost = routeCalculator.getCostOfRoute(currentSolution);
+
+            System.out.println("Route: " + currentSolution.toString() + "\n" + "Cost: " + currentSolutionCost + "\n" + "------");
+
+            if (currentSolutionCost < bestSolutionCost) {
+                bestSolution = currentSolution;
+                bestSolutionCost = routeCalculator.getCostOfRoute(bestSolution);
+            }
+        }
+
+        System.out.println("*BEST*\n" + "Route: " + bestSolution.toString());
+        System.out.println("Cost: " + bestSolutionCost);
     }
 }

@@ -1,38 +1,18 @@
 package CS3910.practicals.week5;
 
 import CS3910.practicals.week1.*;
-import CS3910.practicals.week2.Step2;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
 
 public class Lab5 {
-    private RouteCalculator routeCalculator;
-    private Graph graph;
+    private final RouteCalculator routeCalculator;
+    private final Graph graph;
     private ArrayList<Route> population;
     private Route globalBestRoute;
     private double globalBestRouteCost;
-    private Random random;
-
-    /*
-    Representation
-    --------------------------
-    Fitness evaluation        : length of tour (smaller = better)
-    Recombination             : order 1 crossover
-    Recombination probability : 100%
-    Mutation                  : Swap
-    Mutation probability      : 70%
-    Parent selection          : tournament, size 2
-    Survivor selection        : elitism and generational
-    Population size           : 100
-    Initialisation            : random
-    Termination               : 100 generations
-     */
-    public static void main(String[] args) {
-        // Lab sign off part 4
-        Lab5 lab = new Lab5(100, 100);
-    }
+    private final Random random;
 
     public Lab5(int populationSize, int generations) {
         CsvParser parser = new CsvParser();
@@ -57,6 +37,25 @@ public class Lab5 {
 
         System.out.println("********* End off algorithm after " + generations + " generations *********");
         System.out.println("Best route for this run: " + globalBestRoute.toString() + " with a cost of " + globalBestRouteCost);
+    }
+
+    /*
+    Representation
+    --------------------------
+    Fitness evaluation        : length of tour (smaller = better)
+    Recombination             : order 1 crossover
+    Recombination probability : 100%
+    Mutation                  : Swap
+    Mutation probability      : 70%
+    Parent selection          : tournament, size 2
+    Survivor selection        : elitism and generational
+    Population size           : 100
+    Initialisation            : random
+    Termination               : 100 generations
+     */
+    public static void main(String[] args) {
+        // Lab sign off part 4
+        Lab5 lab = new Lab5(100, 100);
     }
 
     public ArrayList<Route> initialisePopulation(int populationSize) {

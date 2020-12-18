@@ -1,17 +1,14 @@
 package CS3910.coursework.strategy;
 
-import CS3910.coursework.Order;
-import CS3910.coursework.Problem;
-import CS3910.coursework.Recipe;
-import CS3910.coursework.Stock;
+import CS3910.coursework.*;
 
 import java.util.ArrayList;
 
 public abstract class Strategy {
 
-    public abstract ArrayList<Recipe> solve(Problem problem);
+    public abstract Solution solve(ArrayList<Solution> initialPopulation);
 
-    boolean solveable(Problem problem) {
+    static boolean solveable(Problem problem) {
         int maxLength = 0;
         for (Stock stock : problem.getStocks()) {
             int length = stock.getLength();
@@ -20,7 +17,9 @@ public abstract class Strategy {
 
         for (Order order : problem.getOrders()) {
             int orderLength = order.getLength();
-            if (orderLength > maxLength) return false;
+            if (orderLength > maxLength) {
+                return false;
+            }
         }
 
         return true;

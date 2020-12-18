@@ -1,6 +1,5 @@
 package CS3910.practicals.week1;
 
-import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 public class App {

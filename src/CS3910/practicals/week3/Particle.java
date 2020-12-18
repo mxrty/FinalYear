@@ -1,15 +1,13 @@
 package CS3910.practicals.week3;
 
 public class Particle {
+    private static final double PHI = 1.1193;
+    private static final double ETA = 0.721;
     private double[] currentVelocity;
     private double[] currentPosition;
     private double[] personalBestPosition;
     private double personalBestSSL;
-
-    private static final double PHI = 1.1193;
-    private static final double ETA = 0.721;
-
-    private VectorCalculator vectorCalculator;
+    private final VectorCalculator vectorCalculator;
 
     /*
     TODO: rename velocityArrayDesign,currentArrayDesign,currentArrayDesignSSL,personalBestSSL
@@ -25,22 +23,22 @@ public class Particle {
     }
 
     public void update(AntennaArray antennaArray, double[] globalBestPosition) {
-        currentPosition = vectorCalculator.sum(currentPosition,currentVelocity);
+        currentPosition = VectorCalculator.sum(currentPosition, currentVelocity);
         // Inertia = eta * velocity
-        double[] inertia = vectorCalculator.multiply(currentVelocity, ETA);
+        double[] inertia = VectorCalculator.multiply(currentVelocity, ETA);
 
         // Cognitive Attraction = phi * uniformRandomVectorOne * (personalBestPosition - position)
-        double[] cognitiveAttraction = vectorCalculator.multiply(
-                vectorCalculator.multiply(antennaArray.getUniformRandomVector(),
-                        vectorCalculator.subtract(personalBestPosition, currentPosition)), PHI);
+        double[] cognitiveAttraction = VectorCalculator.multiply(
+                VectorCalculator.multiply(antennaArray.getUniformRandomVector(),
+                        VectorCalculator.subtract(personalBestPosition, currentPosition)), PHI);
 
         // Social Attraction = phi * uniformRandomVectorTwo * (globalBestPosition - position)
-        double[] socialAttraction = vectorCalculator.multiply(
-                vectorCalculator.multiply(antennaArray.getUniformRandomVector(),
-                        vectorCalculator.subtract(globalBestPosition, currentPosition)), PHI);
+        double[] socialAttraction = VectorCalculator.multiply(
+                VectorCalculator.multiply(antennaArray.getUniformRandomVector(),
+                        VectorCalculator.subtract(globalBestPosition, currentPosition)), PHI);
 
         // velocity = inertia + cognitiveAttraction + socialAttraction
-        currentVelocity = vectorCalculator.sum(inertia,cognitiveAttraction,socialAttraction);
+        currentVelocity = VectorCalculator.sum(inertia, cognitiveAttraction, socialAttraction);
 
         // Unsure if section is needed
         if (antennaArray.is_valid(currentPosition)) {

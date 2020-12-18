@@ -1,13 +1,16 @@
 package CS3910.coursework;
 
 import java.util.ArrayList;
+import java.util.Hashtable;
 
 public class Problem {
     private ArrayList<Stock> stocks;
     private ArrayList<Order> orders;
 
     public Problem() {
-        intitialiseOptimisationProblem1();
+        //inititialisePerformanceProblem1();
+        inititialiseOptimisationProblem1();
+        //inititialiseOptimisationProblem2();
     }
 
     public ArrayList<Stock> getStocks() {
@@ -18,7 +21,17 @@ public class Problem {
         return orders;
     }
 
-    public void intitialisePerformanceProblem1() {
+    public Hashtable<Integer,Integer> getOrdersTable(){
+        Hashtable<Integer,Integer> table = new Hashtable<>();
+
+        for(Order order : orders){
+            table.put(order.getLength(), order.getQuantity());
+        }
+
+        return table;
+    }
+
+    public void inititialisePerformanceProblem1() {
         stocks = new ArrayList<Stock>();
         stocks.add(new Stock(120, 12));
         stocks.add(new Stock(115, 11.5));
@@ -68,7 +81,7 @@ public class Problem {
     /*
     Solution cost: 1240
      */
-    public void intitialiseOptimisationProblem1() {
+    public void inititialiseOptimisationProblem1() {
         stocks = new ArrayList<Stock>();
         stocks.add(new Stock(10, 100));
         stocks.add(new Stock(13, 130));
@@ -88,7 +101,7 @@ public class Problem {
     /*
     Solution cost: 3998
      */
-    public void intitialiseOptimisationProblem2() {
+    public void inititialiseOptimisationProblem2() {
         stocks = new ArrayList<Stock>();
         stocks.add(new Stock(4300, 86));
         stocks.add(new Stock(4250, 85));

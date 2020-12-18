@@ -2,43 +2,50 @@ package CS3910.coursework;
 
 import CS3910.coursework.strategy.BaselineStrategy;
 import CS3910.coursework.strategy.NovelStrategy;
+import CS3910.coursework.strategy.RandomStrategy;
 import CS3910.coursework.strategy.Strategy;
 
 import java.util.ArrayList;
 
 public class Main {
-    public Problem problem;
-    public Strategy strategy;
+    private Problem problem;
+    private Strategy baselineStrategy;
+    private Strategy novelStrategy;
 
-    /*
-    Initialise problem with random solution
-    Pass initial solution to strategy
-        Each solution iteration modifies recipes
-    Evaluate terminal solution
-     */
     public static void main(String[] args) {
-        Main main = new Main();
-        main.initialise();
-        main.executeStrategy();
+        for (int i = 0; i < 50; i++) {
+            Main main = new Main();
+            main.initialise();
+            main.executeStrategy();
+        }
     }
 
     public void initialise() {
         problem = new Problem();
-        strategy = new BaselineStrategy();
-        //strategy = new NovelStrategy();
+        baselineStrategy = new BaselineStrategy(problem, 100);
+        novelStrategy = new NovelStrategy(problem, 100);
     }
 
     public void executeStrategy() {
-        ArrayList<Recipe> result = strategy.solve(problem);
-        if (!result.isEmpty()) {
-            double totalCost = 0;
-            for (Recipe recipe : result) {
-                totalCost += recipe.getCost();
-                System.out.println(recipe);
-            }
-            System.out.println("Total cost of recipes: " + totalCost);
-        } else {
-            System.out.println("Could not solve given problem.");
-        }
+        ArrayList<Solution> initialPopulation = initialisePopulation(problem, 100);
+
+        Solution resultBaseline = baselineStrategy.solve(new ArrayList<>(initialPopulation));
+        //resultBaseline.printSolution("Baseline");
+
+        Solution resultNovel = novelStrategy.solve(new ArrayList<>(initialPopulation));
+        //resultNovel.printSolution("Novel");
+        System.out.println(resultBaseline.getCost() + "," + resultNovel.getCost());
     }
+
+    private ArrayList<Solution> initialisePopulation(Problem problem, int populationSize) {
+        ArrayList<Solution> population = new ArrayList<>();
+        RandomStrategy randomStrategy = new RandomStrategy();
+        for (int i = 0; i < populationSize; i++) {
+            Solution randomSolution = randomStrategy.solve(problem);
+            population.add(randomSolution);
+        }
+        return population;
+    }
+
+
 }
